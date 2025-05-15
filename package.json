@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/mongoose": "^11.0.3",
+    "bcrypt": "^6.0.0",
+    "mongoose": "^8.14.3"
+  }
+}
