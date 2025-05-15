@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  gateway:
+    build: ./gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth
+      - event
+    networks:
+      - nest-network
+
+  auth:
+    build: ./auth
+    ports:
+      - "3001:3001"
+    networks:
+      - nest-network
+
+  event:
+    build: ./event
+    ports:
+      - "3002:3002"
+    networks:
+      - nest-network
+
+networks:
+  nest-network:
+    driver: bridge
