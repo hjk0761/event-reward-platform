@@ -24,6 +24,19 @@ services:
     networks:
       - nest-network
 
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - nest-network
+
+volumes:
+  mongo-data: {}
+
 networks:
   nest-network:
     driver: bridge
