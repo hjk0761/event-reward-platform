@@ -19,7 +19,7 @@ export class UserService {
             role: role
         };
         const response = await firstValueFrom(
-            this.httpService.post('http://auth:3001/users/register', body),
+            this.httpService.post(process.env.AUTH_URI + '/users/register', body),
         );
         return response.data;
     }
@@ -30,7 +30,7 @@ export class UserService {
             password: password
         };
         const response = await firstValueFrom(
-            this.httpService.post('http://auth:3001/users/login', body),
+            this.httpService.post(process.env.AUTH_URI + '/users/login', body),
         );
         return response.data;
     }

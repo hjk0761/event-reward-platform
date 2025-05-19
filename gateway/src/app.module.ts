@@ -9,9 +9,17 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { EventService } from './services/event.service';
 import { UserController } from './controllers/user.controller';
 import { EventController } from './controllers/event.controller';
+import { ConfigModule } from '@nestjs/config';
+import * as path from 'path';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [
+        path.resolve(process.cwd(), 'example.env'),
+      ],
+    }),
     HttpModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],

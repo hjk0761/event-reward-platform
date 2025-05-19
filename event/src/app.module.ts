@@ -6,10 +6,24 @@ import { AppService } from './app.service';
 import { UserActionModule } from './user-action/user-action.module';
 import { EventModule } from './event/event.module';
 import { RewardModule } from './reward/reward.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as path from 'path';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongo:27017/event-reward-db'),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [
+        path.resolve(process.cwd(), 'example.env'),
+      ],
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_URI'),
+      }),
+    }),
     UserActionModule,
     EventModule,
     RewardModule
@@ -17,4 +31,4 @@ import { RewardModule } from './reward/reward.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

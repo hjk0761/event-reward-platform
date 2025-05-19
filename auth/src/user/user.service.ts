@@ -7,17 +7,18 @@ import { User, UserDocument } from './schemas/user.schema';
 import { TokenService } from '../auth/token.service';
 import { Role } from './constants/role.enum';
 import { TokenInfo } from './dto/token-info.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
 
-    private readonly saltRounds: number = 10;
     private readonly user: string = "user";
 
     constructor(
         @InjectModel('User') private userModel: Model<UserDocument>,
         @InjectModel('Counter') private counterModel: Model<any>,
         private readonly tokenService: TokenService,
+        private configService: ConfigService,
     ) { }
 
     private async getNextId(sequenceName: string): Promise<number> {
@@ -28,7 +29,7 @@ export class UserService {
         );
         return updated.seq;
     }
-    
+
     async register(loginId: string, plainPassword: string, name: string);
     async register(loginId: string, plainPassword: string, name: string, role: Role);
     async register(loginId: string, plainPassword: string, name: string, role?: Role) {
@@ -37,7 +38,8 @@ export class UserService {
         if (exists) throw new ConflictException('이미 존재하는 아이디입니다.');
 
         const id = await this.getNextId(this.user);
-        const hashedPassword = await bcrypt.hash(plainPassword, this.saltRounds);
+        const rounds = Number(this.configService.get('JWT_SALT_ROUNDS') ?? 10);
+        const hashedPassword = await bcrypt.hash(plainPassword, rounds);
 
         const created = new this.userModel({ id, name, loginId: loginId, password: hashedPassword, role: assignedRole });
         return created.save();

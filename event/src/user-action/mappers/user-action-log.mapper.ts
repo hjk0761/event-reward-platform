@@ -34,7 +34,7 @@ export class UserActionMapper {
 
             case UserActionType.FRIEND:
                 return new FriendUserActionLog(
-                    metadata.userId,   // friendId
+                    metadata.userId,
                     metadata.isAdded,
                     userId,
                     createdAt?.toISOString(),

@@ -18,15 +18,16 @@ export class EventService {
             metadata: metadata
         };
         const response = await firstValueFrom(
-            this.httpService.post('http://auth:3002/user-action/do', body),
+            this.httpService.post(process.env.EVENT_URI + '/user-action/do', body),
         );
         return response.data;
     }
 
     async findUserActionByUserId(userId: number) {
-        const url = `http://auth:3002/user-action/find/${userId}`;
+        const url = `/user-action/find/${userId}`;
+        const uri = process.env.EVENT_URI + url;
         const response = await firstValueFrom(
-            this.httpService.get(url),
+            this.httpService.get(uri),
         );
         return response.data;
     }
@@ -41,23 +42,25 @@ export class EventService {
             activated: activated
         };
         const response = await firstValueFrom(
-            this.httpService.post('http://auth:3002/event/create', body),
+            this.httpService.post(process.env.EVENT_URI + '/event/create', body),
         );
         return response.data;
     }
 
     async findEventById(eventId: number) {
-        const url = `http://auth:3002/event/find/${eventId}`;
+        const url = `/event/find/${eventId}`;
+        const uri = process.env.EVENT_URI + url;
         const response = await firstValueFrom(
-            this.httpService.get(url),
+            this.httpService.get(uri),
         );
         return response.data;
     }
 
     async findAllEvent() {
-        const url = `http://auth:3002/event/findAll`;
+        const url = `/event/findAll`;
+        const uri = process.env.EVENT_URI + url;
         const response = await firstValueFrom(
-            this.httpService.get(url),
+            this.httpService.get(uri),
         );
         return response.data;
     }
@@ -68,7 +71,7 @@ export class EventService {
             activated: activated
         };
         const response = await firstValueFrom(
-            this.httpService.put('http://auth:3002/event/changeActivation', body),
+            this.httpService.put(process.env.EVENT_URI + '/event/changeActivation', body),
         );
         return response.data;
     }
@@ -79,23 +82,25 @@ export class EventService {
             metadata: metadata
         };
         const response = await firstValueFrom(
-            this.httpService.post('http://auth:3002/reward/create', body),
+            this.httpService.post(process.env.EVENT_URI + '/reward/create', body),
         );
         return response.data;
     }
 
     async findRewardByEventId(eventId: number) {
-        const url = `http://auth:3002/reward/findAll/${eventId}`;
+        const url = `/reward/findAll/${eventId}`;
+        const uri = process.env.EVENT_URI + url;
         const response = await firstValueFrom(
-            this.httpService.get(url),
+            this.httpService.get(uri),
         );
         return response.data;
     }
 
     async findReward() {
-        const url = `http://auth:3002/reward/findAll`;
+        const url = `/reward/findAll`;
+        const uri = process.env.EVENT_URI + url;
         const response = await firstValueFrom(
-            this.httpService.get(url),
+            this.httpService.get(uri),
         );
         return response.data;
     }
@@ -106,23 +111,25 @@ export class EventService {
             eventId: eventId
         };
         const response = await firstValueFrom(
-            this.httpService.post('http://auth:3002/reward/claimReward', body),
+            this.httpService.post(process.env.EVENT_URI + '/reward/claimReward', body),
         );
         return response.data;
     }
 
     async findClaimByUserId(userId: number) {
-        const url = `http://auth:3002/reward/findClaim/${userId}`;
+        const url = `/reward/findClaim/${userId}`;
+        const uri = process.env.EVENT_URI + url;
         const response = await firstValueFrom(
-            this.httpService.get(url),
+            this.httpService.get(uri),
         );
         return response.data;
     }
 
     async findAllClaims() {
-        const url = `http://auth:3002/reward/findAllClaim`;
+        const url = `/reward/findAllClaim`;
+        const uri = process.env.EVENT_URI + url;
         const response = await firstValueFrom(
-            this.httpService.get(url),
+            this.httpService.get(uri),
         );
         return response.data;
     }

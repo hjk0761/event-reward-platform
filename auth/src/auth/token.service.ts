@@ -3,16 +3,18 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { TokenProvider } from './token.provider';
 import { User } from '../user/schemas/user.schema';
 import { TokenInfo } from './interfaces/token_info.interface';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TokenService {
 
-    private readonly accessTokenExpiration = 1000;
-    private readonly refreshTokenExpiration = 1000;
-    private readonly secret = "asdf";
+    private readonly accessTokenExpiration = Number(this.configService.get<number>('ACCESS_EXPIRATION'));
+    private readonly refreshTokenExpiration = Number(this.configService.get<number>('REFRESH_EXPIRATION'));
+    private readonly secret = this.configService.get<string>('JWT_SECRET');
 
     constructor(
         private readonly tokenProvider: TokenProvider,
+        private configService: ConfigService,
     ) { }
 
     async createTokens(user: User): Promise<TokenInfo> {
