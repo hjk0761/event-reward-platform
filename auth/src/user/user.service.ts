@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-import { User, UserDocument } from './schemas/user.schema';
+import { UserDocument } from './schemas/user.schema';
 import { TokenService } from '../auth/token.service';
 import { Role } from './constants/role.enum';
 import { TokenInfo } from './dto/token-info.dto';
@@ -16,19 +16,9 @@ export class UserService {
 
     constructor(
         @InjectModel('User') private userModel: Model<UserDocument>,
-        @InjectModel('Counter') private counterModel: Model<any>,
         private readonly tokenService: TokenService,
         private configService: ConfigService,
     ) { }
-
-    private async getNextId(sequenceName: string): Promise<number> {
-        const updated = await this.counterModel.findOneAndUpdate(
-            { id: sequenceName },
-            { $inc: { seq: 1 } },
-            { new: true, upsert: true },
-        );
-        return updated.seq;
-    }
 
     async register(loginId: string, plainPassword: string, name: string);
     async register(loginId: string, plainPassword: string, name: string, role: Role);
@@ -37,11 +27,10 @@ export class UserService {
         const exists = await this.userModel.findOne({ loginId: loginId });
         if (exists) throw new ConflictException('이미 존재하는 아이디입니다.');
 
-        const id = await this.getNextId(this.user);
         const rounds = Number(this.configService.get('JWT_SALT_ROUNDS') ?? 10);
         const hashedPassword = await bcrypt.hash(plainPassword, rounds);
 
-        const created = new this.userModel({ id, name, loginId: loginId, password: hashedPassword, role: assignedRole });
+        const created = new this.userModel({ name, loginId: loginId, password: hashedPassword, role: assignedRole });
         return created.save();
     }
 
@@ -55,7 +44,7 @@ export class UserService {
         return this.getTokenInfoFromUser(user);
     }
 
-    private async getTokenInfoFromUser(user: User): Promise<TokenInfo> {
+    private async getTokenInfoFromUser(user: UserDocument): Promise<TokenInfo> {
         const tokenInfo = await this.tokenService.createTokens(user);
         return {
             accessToken: tokenInfo.accessToken,

@@ -3,7 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { UserSchema } from './schemas/user.schema';
 import { UserService } from './user.service';
-import { CounterSchema } from './schemas/counter.schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserController } from './user.controller';
 
@@ -11,7 +10,6 @@ import { UserController } from './user.controller';
   imports: [
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
-      { name: 'Counter', schema: CounterSchema },
     ]),
     AuthModule,
   ],

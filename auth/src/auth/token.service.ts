@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { TokenProvider } from './token.provider';
-import { User } from '../user/schemas/user.schema';
+import { UserDocument } from '../user/schemas/user.schema';
 import { TokenInfo } from './interfaces/token_info.interface';
 import { ConfigService } from '@nestjs/config';
 
@@ -17,17 +17,17 @@ export class TokenService {
         private configService: ConfigService,
     ) { }
 
-    async createTokens(user: User): Promise<TokenInfo> {
+    async createTokens(user: UserDocument): Promise<TokenInfo> {
         const accessToken = await this.createAccessToken(user);
         const refreshToken = await this.createRefreshToken(user);
         return { accessToken, refreshToken } as TokenInfo;
     }
 
-    private async createAccessToken(user: User): Promise<string> {
+    private async createAccessToken(user: UserDocument): Promise<string> {
         return this.tokenProvider.createToken(user, this.accessTokenExpiration, this.secret);
     }
 
-    private async createRefreshToken(user: User): Promise<string> {
+    private async createRefreshToken(user: UserDocument): Promise<string> {
         return this.tokenProvider.createToken(user, this.refreshTokenExpiration, this.secret);
     }
 
