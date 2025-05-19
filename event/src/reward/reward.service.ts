@@ -21,19 +21,19 @@ export class RewardService {
         private readonly eventService: EventService,
     ) { }
 
-    async createReward(eventId: number, metadata: { itemId: number, amount: number }[]) {
+    async createReward(eventId: string, metadata: { itemId: number, amount: number }[]) {
         const created = new this.itemRewardModel({ eventId: eventId, metadata: metadata })
         return await created.save();
     }
 
-    async findAllRewards(eventId?: number) {
+    async findAllRewards(eventId?: string) {
         if (eventId != null) {
             return await this.itemRewardModel.find({ eventId: eventId });
         }
         return await this.itemRewardModel.find();
     }
 
-    async claimEventReward(userId: number, eventId: number) {
+    async claimEventReward(userId: string, eventId: string) {
         const eventEntity = await this.eventService.findEventByEventId(eventId);
         if (eventEntity == null) {
             throw new NotFoundException("eventId에 해당하는 이벤트가 없습니다.");
@@ -67,7 +67,7 @@ export class RewardService {
         return !prevClaims.some(claim => claim.success === true);
     }
 
-    private async giveReward(userId: number, eventId: number) {
+    private async giveReward(userId: string, eventId: string) {
         const rewards = await this.itemRewardModel.find({ eventId: eventId });
         //const rewards = await this.rewardClaimModel.find({ userId: userId, eventId: eventId });
         console.log(rewards);
@@ -87,7 +87,7 @@ export class RewardService {
         return;
     }
 
-    async findClaimForUser(userId: number) {
+    async findClaimForUser(userId: string) {
         const claims = await this.rewardClaimModel.find({ userId: userId });
         return claims;
     }

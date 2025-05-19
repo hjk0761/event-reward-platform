@@ -18,7 +18,7 @@ export class RewardController {
     }
 
     @Get('/findAll/:id?')
-    find(@Param('id') eventId?: number): Promise<ItemRewardModel[]> {
+    find(@Param('id') eventId?: string): Promise<ItemRewardModel[]> {
         return this.rewardService.findAllRewards(eventId);
     }
 
@@ -28,7 +28,7 @@ export class RewardController {
     }
 
     @Get('/findClaim/:id')
-    findClaimForUser(@Param('id') userId: number): Promise<RewardClaimLogModel[]> {
+    findClaimForUser(@Param('id') userId: string): Promise<RewardClaimLogModel[]> {
         return this.rewardService.findClaimForUser(userId);
     }
 

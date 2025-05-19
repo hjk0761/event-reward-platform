@@ -6,7 +6,7 @@ import { Reward } from '../types/reward.type';
 export class ItemRewardModel extends Document implements Reward {
 
   @Prop({ required: true })
-  eventId: number;
+  eventId: string;
 
   @Prop({
     type: [{ itemId: Number, amount: Number }],

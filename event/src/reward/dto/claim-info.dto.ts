@@ -3,8 +3,8 @@ import { IsNotEmpty } from 'class-validator';
 export class ClaimRewardInfo {
 
     @IsNotEmpty()
-    userId: number;
+    userId: string;
 
     @IsNotEmpty()
-    eventId: number;
+    eventId: string;
 }

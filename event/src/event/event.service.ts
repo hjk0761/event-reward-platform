@@ -22,8 +22,8 @@ export class EventService {
         return events;
     }
 
-    async findEventByEventId(eventId: number) {
-        return await this.eventModel.findOne({ eventId: eventId });
+    async findEventByEventId(eventId: string) {
+        return await this.eventModel.findOne({ _id: eventId });
     }
 
     async changeEventActivation(eventId: string, activated: boolean) {

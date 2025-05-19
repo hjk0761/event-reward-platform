@@ -1,4 +1,4 @@
 export type Reward = {
-    eventId: number,
+    eventId: string,
     metadata: { itemId: number; amount: number }[];
 }

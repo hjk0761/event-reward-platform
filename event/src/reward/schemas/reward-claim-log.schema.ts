@@ -8,10 +8,10 @@ export class RewardClaimLogModel extends Document {
     //rewardType: GeneralRewardType;
 
     @Prop({ required: true })
-    userId: number;
+    userId: string;
 
     @Prop({ required: true })
-    eventId: number;
+    eventId: string;
 
     @Prop({ required: true, default: false })
     success: boolean;

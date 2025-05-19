@@ -12,12 +12,12 @@ export class UserActionService {
         @InjectModel('UserAction') private userActionModel: Model<UserActionModel>,
     ) { }
 
-    async do(type: UserActionType, userId: number, metadata: Record<string, any>): Promise<UserActionModel> {
+    async do(type: UserActionType, userId: string, metadata: Record<string, any>): Promise<UserActionModel> {
         const created = new this.userActionModel({ type: type, userId: userId, metadata: metadata });
         return await created.save();
     }
 
-    async findAllByUserId(userId: number): Promise<UserActionModel[]> {
+    async findAllByUserId(userId: string): Promise<UserActionModel[]> {
         return await this.userActionModel.find({ userId: userId });
     }
 }
