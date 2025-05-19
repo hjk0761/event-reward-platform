@@ -7,7 +7,7 @@ export class UserActionInfo {
     type: UserActionType;
 
     @IsNotEmpty()
-    userId: number;
+    userId: string;
 
     @IsNotEmpty()
     metadata: Record<string, any>;

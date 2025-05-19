@@ -17,7 +17,7 @@ export class EventController {
     }
 
     @Get('/find/:id')
-    find(@Param('id') eventId: number): Promise<EventModel> {
+    find(@Param('id') eventId: string): Promise<EventModel> {
         return this.eventService.findEventByEventId(eventId);
     }
 

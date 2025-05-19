@@ -16,7 +16,7 @@ export class UserActionController {
     }
 
     @Get('/find/:id')
-    login(@Param('id') id: number): Promise<UserActionModel[]> {
+    login(@Param('id') id: string): Promise<UserActionModel[]> {
         return this.userActionService.findAllByUserId(id);
     }
 }
