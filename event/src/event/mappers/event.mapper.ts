@@ -15,8 +15,6 @@ export class EventMapper {
         return {
             type: event.condition.userActionType,
             metadata: event.condition.metadata,
-
-            eventId: event.eventId,
             startAt: event.startAt,
             endAt: event.endAt,
             activated: event.activated,
@@ -25,7 +23,6 @@ export class EventMapper {
 
     static toDomain(eventModel: EventModel): Event {
         return new Event(
-            eventModel.eventId,
             this.buildCondition(
                 eventModel.type,
                 eventModel.metadata,
@@ -35,6 +32,7 @@ export class EventMapper {
             eventModel.activated,
             (eventModel as any).createdAt,
             (eventModel as any).updatedAt,
+            eventModel._id.toString(),
         );
     }
 

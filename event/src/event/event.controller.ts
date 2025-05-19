@@ -13,7 +13,7 @@ export class EventController {
 
     @Post('/create')
     create(@Body() eventInfo: EventInfo): Promise<EventModel> {
-        return this.eventService.createEvent(eventInfo.type, eventInfo.metadata, eventInfo.eventId, eventInfo.startAt, eventInfo.endAt, eventInfo.activated);
+        return this.eventService.createEvent(eventInfo.type, eventInfo.metadata, eventInfo.startAt, eventInfo.endAt, eventInfo.activated);
     }
 
     @Get('/find/:id')

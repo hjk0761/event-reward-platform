@@ -2,7 +2,7 @@ import { GeneralCondition } from "../../event/types/general-condition.type"
 
 export class Event {
 
-    eventId: number;
+    eventId?: string;
     condition: GeneralCondition;
     startAt: string;
     endAt: string;
@@ -11,7 +11,7 @@ export class Event {
     createdAt?: string;
     updatedAt?: string;
 
-    constructor(eventId: number, condition: GeneralCondition, startAt: string, endAt: string, activated: boolean, createdAt?: string, updatedAt?: string) {
+    constructor(condition: GeneralCondition, startAt: string, endAt: string, activated: boolean, createdAt?: string, updatedAt?: string, eventId?: string) {
         this.eventId = eventId;
         this.condition = condition;
         this.startAt = startAt;

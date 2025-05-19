@@ -12,8 +12,8 @@ export class EventService {
         @InjectModel('Event') private eventModel: Model<EventModel>,
     ) { }
 
-    async createEvent(type: UserActionType, metadata: Record<string, any>, eventId: number, startAt: string, endAt: string, activated: boolean) {
-        const created = await this.eventModel.create({ type: type, metadata: metadata, eventId: eventId, startAt: startAt, endAt: endAt, activated: activated});
+    async createEvent(type: UserActionType, metadata: Record<string, any>, startAt: string, endAt: string, activated: boolean) {
+        const created = await this.eventModel.create({ type: type, metadata: metadata, startAt: startAt, endAt: endAt, activated: activated});
         return created;
     }
 
@@ -26,9 +26,9 @@ export class EventService {
         return await this.eventModel.findOne({ eventId: eventId });
     }
 
-    async changeEventActivation(eventId: number, activated: boolean) {
+    async changeEventActivation(eventId: string, activated: boolean) {
         const event = await this.eventModel.findOneAndUpdate(
-            { eventId: eventId },
+            { _id: eventId },
             { $set: { activated: activated } },
             { new: true}
         );

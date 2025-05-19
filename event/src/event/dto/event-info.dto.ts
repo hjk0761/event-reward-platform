@@ -10,7 +10,7 @@ export class EventInfo {
     metadata: Record<string, any>;
 
     @IsNotEmpty()
-    eventId: number;
+    eventId: string;
 
     @IsNotEmpty()
     startAt: string;

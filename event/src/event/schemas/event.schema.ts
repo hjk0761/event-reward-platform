@@ -12,9 +12,6 @@ export class EventModel extends Document {
   metadata: Record<string, any>;
 
   @Prop({ required: true })
-  eventId: number;
-
-  @Prop({ required: true })
   startAt: string;
 
   @Prop({ required: true })
