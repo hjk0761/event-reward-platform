@@ -7,7 +7,7 @@ export class ItemUserActionLog extends UserLog implements UserActionMetadata {
     userActionType: UserActionType;
     metadata: Record<string, any>;
 
-    constructor(itemId: number, amount: number, isGained: boolean, userId: number, createdAt: string, updatedAt: string) {
+    constructor(itemId: number, amount: number, isGained: boolean, userId: string, createdAt: string, updatedAt: string) {
         super();
         this.userActionType = UserActionType.ITEM;
         this.metadata = { itemId: itemId, amount: amount, isGained: isGained };

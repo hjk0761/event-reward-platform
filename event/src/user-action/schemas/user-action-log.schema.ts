@@ -9,7 +9,7 @@ export class UserActionModel extends Document {
   type: UserActionType;
 
   @Prop({ required: true })
-  userId: number;
+  userId: string;
 
   @Prop({ type: MongooseSchema.Types.Mixed, required: true })
   metadata: Record<string, any>;

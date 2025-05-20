@@ -7,7 +7,7 @@ export class FriendUserActionLog extends UserLog implements UserActionMetadata {
     userActionType: UserActionType;
     metadata: Record<string, any>;
 
-    constructor(friendId: number, isAdded: boolean, userId: number, createdAt: string, updatedAt: string) {
+    constructor(friendId: number, isAdded: boolean, userId: string, createdAt: string, updatedAt: string) {
         super();
         this.userActionType = UserActionType.FRIEND;
         this.metadata = { userId: friendId, isAdded: isAdded };

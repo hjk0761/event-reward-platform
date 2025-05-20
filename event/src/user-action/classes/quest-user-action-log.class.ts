@@ -7,7 +7,7 @@ export class QuestUserActionLog extends UserLog implements UserActionMetadata {
     userActionType: UserActionType;
     metadata: Record<string, any>;
 
-    constructor(questId: number, userId: number, createdAt: string, updatedAt: string) {
+    constructor(questId: number, userId: string, createdAt: string, updatedAt: string) {
         super();
         this.userActionType = UserActionType.QUEST;
         this.metadata = { questId: questId };

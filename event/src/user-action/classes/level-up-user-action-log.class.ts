@@ -7,7 +7,7 @@ export class LevelUpUserActionLog extends UserLog implements UserActionMetadata 
     userActionType: UserActionType;
     metadata: Record<string, any>;
 
-    constructor(prevLevel: number, curLevel: number, userId: number, createdAt: string, updatedAt: string) {
+    constructor(prevLevel: number, curLevel: number, userId: string, createdAt: string, updatedAt: string) {
         super();
         this.userActionType = UserActionType.LEVEL
         this.metadata = { prevLevel: prevLevel, curLevel: curLevel };

@@ -1,5 +1,5 @@
 export abstract class UserLog {
-    userId: number;
+    userId: string;
     createdAt: string;
     updatedAt: string;
 }

@@ -7,7 +7,7 @@ export class AttendanceUserActionLog extends UserLog implements UserActionMetada
     userActionType: UserActionType;
     metadata: Record<string, any>;
 
-    constructor(date: string, userId: number, createdAt: string, updtaedAt: string) {
+    constructor(date: string, userId: string, createdAt: string, updtaedAt: string) {
         super();
         this.userActionType = UserActionType.ATTENDANCE;
         this.metadata = { date: date }
