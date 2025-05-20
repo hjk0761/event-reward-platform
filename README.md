@@ -47,8 +47,34 @@ docker-compose up --build
 
 모든 엔드포인트는 `http://localhost:3000`를 기반으로 수행됩니다.
 
-|메서드|엔드포인트|요청|응답|
-|--|--|--|--|
+gateway/src/controllers/*.controller.ts를 기반으로 합니다.
+
+### `GET /register`
+
+Request
+```
+body {
+    loginId: string;
+    password: string;
+    name: string;
+    role?: ['ADMIN', 'AUDITOR', 'OPERATOR', 'USER'];
+}
+```
+
+Response
+```
+200 OK
+...
+body {
+    _id: string;
+    name: string;
+    loginId: string;
+    password: string;
+    role: ['ADMIN', 'AUDITOR', 'OPERATOR', 'USER'];
+}
+```
+
+
 
 ###
 
