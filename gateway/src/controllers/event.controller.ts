@@ -74,8 +74,6 @@ export class EventController {
     return this.eventService.createReward(rewardInfo.eventId, rewardInfo.metadata);
   }
 
-  //Reward -> Event 바꾸기
-
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN', 'OPERATOR')
   @Get('/reward/find/:id')
