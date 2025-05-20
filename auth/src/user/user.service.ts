@@ -8,6 +8,7 @@ import { TokenService } from '../auth/token.service';
 import { Role } from './constants/role.enum';
 import { TokenInfo } from './dto/token-info.dto';
 import { ConfigService } from '@nestjs/config';
+import { LoginInfoDocument } from 'src/auth/schemas/login-info.schema';
 
 @Injectable()
 export class UserService {
@@ -16,12 +17,11 @@ export class UserService {
 
     constructor(
         @InjectModel('User') private userModel: Model<UserDocument>,
+        @InjectModel('LoginInfo') private loginInfoModel: Model<LoginInfoDocument>,
         private readonly tokenService: TokenService,
         private configService: ConfigService,
     ) { }
 
-    async register(loginId: string, plainPassword: string, name: string);
-    async register(loginId: string, plainPassword: string, name: string, role: Role);
     async register(loginId: string, plainPassword: string, name: string, role?: Role) {
         const assignedRole = role ?? Role.USER;
         const exists = await this.userModel.findOne({ loginId: loginId });
@@ -34,14 +34,16 @@ export class UserService {
         return created.save();
     }
 
-    async login(loginId: string, plainPassword: string): Promise<any> {
+    async login(loginId: string, plainPassword: string): Promise<TokenInfo> {
         const user = await this.userModel.findOne({ loginId: loginId });
         if (!user) throw new UnauthorizedException('존재하지 않는 사용자');
 
         const isMatch = await bcrypt.compare(plainPassword, user.password);
         if (!isMatch) throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
 
-        return this.getTokenInfoFromUser(user);
+        const tokenInfo = await this.getTokenInfoFromUser(user);
+        await this.loginInfoModel.create({ user: user._id, refreshToken: tokenInfo.refreshToken })
+        return tokenInfo;
     }
 
     private async getTokenInfoFromUser(user: UserDocument): Promise<TokenInfo> {
@@ -50,5 +52,13 @@ export class UserService {
             accessToken: tokenInfo.accessToken,
             refreshToken: tokenInfo.refreshToken,
         } as TokenInfo;
+    }
+
+    async refresh(refreshToken: string): Promise<any> {
+        this.tokenService.validateToken(refreshToken);
+        const loginInfo = await this.loginInfoModel.findOne({ refreshToken: refreshToken }).populate('user');
+        const tokenInfo = await this.getTokenInfoFromUser(loginInfo.user as UserDocument);
+        await this.loginInfoModel.findOneAndUpdate({ user: loginInfo.user }, { refreshToken: refreshToken })
+        return tokenInfo;
     }
 }

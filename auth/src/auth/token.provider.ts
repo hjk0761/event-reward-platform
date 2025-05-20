@@ -22,7 +22,7 @@ export class TokenProvider {
         );
     }
 
-    private async validateToken(token: string, secret: string): Promise<JwtTokenPayload> {
+    async validateToken(token: string, secret: string): Promise<JwtTokenPayload> {
         try {
             const decoded = await this.jwtService.verifyAsync<JwtTokenPayload>(token, { secret: secret });
             return decoded

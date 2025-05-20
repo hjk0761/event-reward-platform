@@ -32,7 +32,19 @@ export class UserService {
         const response = await firstValueFrom(
             this.httpService.post(process.env.AUTH_URI + '/users/login', body),
         );
-        return response.data;
+        const accessToken = response.headers.authorization;
+        return { accessToken: accessToken, refreshToken: response.data.refreshToken };
+    }
+
+    async refresh(refreshToken: string) {
+        const body = {
+            refreshToken: refreshToken
+        }
+        const response = await firstValueFrom(
+            this.httpService.post(process.env.AUTH_URI + '/users/refresh', body),
+        );
+        const accessToken = response.headers.authorization;
+        return { accessToken: accessToken, refreshToken: response.data.refreshToken };
     }
 
     async updateRole(userId: number, newRole: Role) {

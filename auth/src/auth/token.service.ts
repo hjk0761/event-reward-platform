@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { TokenProvider } from './token.provider';
 import { UserDocument } from '../user/schemas/user.schema';
-import { TokenInfo } from './interfaces/token_info.interface';
+import { TokenInfo } from './interfaces/token-info.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -29,6 +29,10 @@ export class TokenService {
 
     private async createRefreshToken(user: UserDocument): Promise<string> {
         return this.tokenProvider.createToken(user, this.refreshTokenExpiration, this.secret);
+    }
+
+    async validateToken(token: string): Promise<any> {
+        return this.tokenProvider.validateToken(token, this.secret);
     }
 
     async extractLoginIdFromToken(token: string): Promise<string> {
