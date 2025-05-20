@@ -37,7 +37,7 @@ export class TokenService {
 
     async extractLoginIdFromToken(token: string): Promise<string> {
         const jwtPayload = await this.tokenProvider.getPayload(token, this.secret)
-        if (!jwtPayload) throw new UnauthorizedException('존재하지 않는 사용자');
+        if (!jwtPayload) throw new UnauthorizedException('잘못된 사용자입니다.');
         return jwtPayload.loginId;
     }
 }

@@ -36,7 +36,7 @@ export class UserService {
 
     async login(loginId: string, plainPassword: string): Promise<TokenInfo> {
         const user = await this.userModel.findOne({ loginId: loginId });
-        if (!user) throw new UnauthorizedException('존재하지 않는 사용자');
+        if (!user) throw new UnauthorizedException('존재하지 않는 아이디입니다.');
 
         const isMatch = await bcrypt.compare(plainPassword, user.password);
         if (!isMatch) throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');

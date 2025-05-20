@@ -10,6 +10,7 @@ import { ItemRewardModel } from './schemas/item-reward.schema';
 import { RewardClaimLogModel } from './schemas/reward-claim-log.schema';
 import { UserActionService } from 'src/user-action/user-action.service';
 import { EventService } from 'src/event/event.service';
+import { EventModel } from 'src/event/schemas/event.schema';
 
 @Injectable()
 export class RewardService {
@@ -38,29 +39,26 @@ export class RewardService {
         if (eventEntity == null) {
             throw new NotFoundException("eventId에 해당하는 이벤트가 없습니다.");
         }
-        const event = EventMapper.toDomain(eventEntity);
-        const logsEntity = await this.userActionService.findAllByUserId(userId);
-        console.log("logsEntity: ", logsEntity)
-        for (const l of logsEntity) {
-            console.log("logEntity: ", l)
-        }
-        const logs = logsEntity.map((x: UserActionModel) => UserActionMapper.toDomain(x));
-        const possible = await event.condition.check(logs);
-        console.log("possible: ", possible)
-        const prevClaims = await this.rewardClaimModel.find({ userId: userId, eventId: eventId });
-        const test = await this.checkPrevClaims(prevClaims);
-        console.log("test: ", test)
-        const result = possible && test;
-        console.log("result: ", result)
-        const rewardClaim = new this.rewardClaimModel({ userId: userId, eventId: eventId, success: result });
+        const conditionChecked = await this.checkEventCondition(userId, eventEntity);
+        const prevClaimChecked = await this.checkPrevClaims(userId, eventId);
+        const possibleToClaim = conditionChecked && prevClaimChecked;
+        const rewardClaim = new this.rewardClaimModel({ userId: userId, eventId: eventId, success: possibleToClaim });
         await rewardClaim.save();
-        if (result) {
+        if (possibleToClaim) {
             await this.giveReward(userId, eventId);
         }
         return;
     }
 
-    private async checkPrevClaims(prevClaims: RewardClaimLogModel[]) {
+    private async checkEventCondition(userId:string, eventEntity: EventModel): Promise<boolean> {
+        const event = EventMapper.toDomain(eventEntity);
+        const logsEntity = await this.userActionService.findAllByUserId(userId);
+        const logs = logsEntity.map((x: UserActionModel) => UserActionMapper.toDomain(x));
+        return await event.condition.check(logs);
+    }
+
+    private async checkPrevClaims(userId:string, eventId: string) {
+        const prevClaims = await this.rewardClaimModel.find({ userId: userId, eventId: eventId });
         if (prevClaims.length == 0) {
             return true;
         }
@@ -69,18 +67,19 @@ export class RewardService {
 
     private async giveReward(userId: string, eventId: string) {
         const rewards = await this.itemRewardModel.find({ eventId: eventId });
-        //const rewards = await this.rewardClaimModel.find({ userId: userId, eventId: eventId });
-        console.log(rewards);
+        if (rewards == null || rewards.length == 0) {
+            throw new NotFoundException("해당 eventId 에 해당하는 보상이 없습니다.");
+        }
         const type = UserActionType.ITEM;
         const metadatas = []
         for (const reward of rewards) {
-            for (const re of reward.metadata) {
-                const me = {
-                    itemId: re.itemId,
-                    amount: re.amount,
+            for (const eachReward of reward.metadata) {
+                const itemMetadata = {
+                    itemId: eachReward.itemId,
+                    amount: eachReward.amount,
                     isGained: true
                 };
-                metadatas.push(me);
+                metadatas.push(itemMetadata);
             };
         };
         await this.userActionService.do(type, userId, metadatas);

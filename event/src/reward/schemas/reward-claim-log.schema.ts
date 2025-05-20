@@ -4,9 +4,6 @@ import { Schema as Document } from 'mongoose';
 @Schema({ timestamps: true })
 export class RewardClaimLogModel extends Document {
 
-    //@Prop({ required: true, enum: Object.values(GeneralRewardType) })
-    //rewardType: GeneralRewardType;
-
     @Prop({ required: true })
     userId: string;
 
