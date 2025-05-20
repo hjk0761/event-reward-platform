@@ -117,6 +117,55 @@ body {
 }
 ```
 
+### `POST /user-action/do`
+
+Request
+```
+header {
+    Authorization: Bearer {AccessToken};
+    //role = {'ADMIN', 'OPERATOR'}
+}
+body {
+    type: ['LEVEL', 'FRIEND', 'ATTENDANCE', 'ITEM', 'QUEST'];
+    userId: string;
+    metadata: Record<string, any>;
+    //
+    type === ITEM:
+        metadata = {
+            itemId: number,
+            amount: number,
+            isGained: boolean
+        }
+    type === FRIEND:
+        metadata = {
+            friendId: string,
+            isAdded: boolean
+        }
+    type === ATTENDANCE:
+        metadata = {
+            date: string
+        }
+    type === LEVEL:
+        metadata = {
+            prevLevel: number,
+            curLevel: number
+        }
+    type === QUEST:
+        metadata = {
+            questId: number
+        }
+}s
+```
+
+Response
+```
+200 OK
+...
+body {
+    ...
+}
+```
+
 
 ###
 
