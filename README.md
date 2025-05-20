@@ -1,5 +1,7 @@
 # event-reward-platform
 
+과제 수행자: 김현중(hjk0761@naver.com)
+
 ## 실행 방법
 ```
 git clone https://github.com/hjk0761/event-reward-platform.git
@@ -11,33 +13,31 @@ docker-compose up --build
 
 ### Gateway Server
 
-- [ ] Passport 및 Guard 를 사옹하여 인증/인가
-- [ ] API 라우팅
-- [ ] JWT 검증
+- [x] Passport 및 Guard 를 사옹하여 인증/인가
+- [x] API 라우팅
+- [x] JWT 검증
 
 ### Auth Server
 
-- [ ] 유저 등록
-- [ ] 로그인
+- [x] 유저 등록
+- [x] 로그인
     - JWT 토큰 생성
-- [ ] 역할 관리(USER, OPERATOR, AUDITOR, ADMIN)
+- [x] 역할 관리(USER, OPERATOR, AUDITOR, ADMIN)
     - 유저 역할 수정(접근: ADMIN)
 
 ### Event Server
 
-- [ ] 이벤트 생성(접근: ADMIN, OPERATOR)
-- [ ] 이벤트 조회(접근: ADMIN, OPERATOR)
-- [ ] 보상 생성(접근: ADMIN, OPERATOR)
-- [ ] 보상 조회(접근: ADMIN, OPERATOR)
-- [ ] 유저 보상 요청(접근: USER)
-- [ ] 보상 요청 내역 확인(접근: ADMIN, OPERATOR, AUDITOR)
-- [ ] 보상 요청 내역 확인(접근: USER)
+- [x] 이벤트 생성(접근: ADMIN, OPERATOR)
+- [x] 이벤트 조회(접근: ADMIN, OPERATOR)
+- [x] 보상 생성(접근: ADMIN, OPERATOR)
+- [x] 보상 조회(접근: ADMIN, OPERATOR)
+- [x] 유저 보상 요청(접근: USER)
+- [x] 보상 요청 내역 확인(접근: ADMIN, OPERATOR, AUDITOR)
+- [x] 보상 요청 내역 확인(접근: USER)
 
-### Game Server
+## API 명세
 
-- [ ] 사용자의 행동 로그 생성
-    - 레벨 변화
-    - 아이템 획득 및 손실
-    - 출석
-    - 친구 추가 및 삭제
-    - 퀘스트 완료
+## 아키텍처 구조
+
+![Event 및 Reward 도메인 설계](diagram/class-diagram.drawio.png)
+![서비스 설계](diagram/server-diagram.drawio.png)
