@@ -33,12 +33,4 @@ export class UserController {
     res.setHeader('Authorization', `${tokenInfo.accessToken}`);
     return { refreshToken: tokenInfo.refreshToken };
   }
-
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN')
-  @Get('/admin')
-  updateRole() {
-    console.log('controller called: /admin');
-    return
-  }
 }
