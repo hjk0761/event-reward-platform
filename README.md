@@ -49,7 +49,7 @@ docker-compose up --build
 
 gateway/src/controllers/*.controller.ts를 기반으로 합니다.
 
-### `GET /register`
+### `POST /register`
 
 Request
 ```
@@ -74,6 +74,48 @@ body {
 }
 ```
 
+### `POST /login`
+
+Request
+```
+body {
+    loginId: string;
+    password: string;
+}s
+```
+
+Response
+```
+200 OK
+...
+header {
+    Authorization: Bearer {AccessToken};
+}
+body {
+    refreshToken: {RefreshToken};
+}
+```
+
+### `POST /refresh`
+
+Request
+```
+body {
+    refreshToken: string;
+}s
+```
+
+Response
+```
+200 OK
+...
+header {
+    Authorization: Bearer {AccessToken};
+}
+body {
+    refreshToken: {RefreshToken};
+}
+```
 
 
 ###
